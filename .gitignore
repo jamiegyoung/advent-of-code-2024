@@ -30,3 +30,5 @@ aoc-*.tar
 /config/*.secret.exs
 
 .elixir_ls/
+
+*.input
