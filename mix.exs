@@ -21,7 +21,8 @@ defmodule Aoc2024.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:benchee, "~> 1.0", only: :dev}
+      {:benchee, "~> 1.0", only: :dev},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
     ]
   end
 end
