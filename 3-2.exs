@@ -21,13 +21,13 @@ defmodule Main do
       %{flag: true, value: 0},
       fn
         [a, b], %{value: value, flag: flag} ->
-          cond do
-            flag ->
+          if flag == true do
             %{
               flag: flag,
               value: value + String.to_integer(a) * String.to_integer(b)
             }
-            true -> %{flag: flag, value: value}
+          else
+            %{flag: flag, value: value}
           end
         ["do()"], acc -> %{flag: true, value: acc[:value]}
         ["don't()"], acc -> %{flag: false, value: acc[:value]}
