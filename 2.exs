@@ -26,7 +26,7 @@ defmodule Main do
   end
 
   def process(content) do
-    final = content
+    content
       |> String.trim()
       |> String.split("\n")
       |> Enum.map(&String.split(&1, " "))
@@ -34,16 +34,15 @@ defmodule Main do
       |> Enum.map(&get_differences/1)
       |> Enum.filter(&diffs_in_bounds/1)
       |> length()
-
-    IO.inspect(final)
-
   end
 
   def run() do
     case File.read("2.input") do
       {:ok, content} ->
-        process(content)
-        # IO.inpect(final)
+        Benchee.run(%{"2" => fn -> process(content) end})
+        final = process(content)
+        IO.puts("\n")
+        IO.inspect(final)
       {:error, reason} ->
         IO.puts(reason)
     end

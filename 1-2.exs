@@ -30,8 +30,10 @@ defmodule Main do
   def run() do
     case File.read("1.input") do
       {:ok, content} ->
+        Benchee.run(%{"1-2" => fn -> process(content) end})
         final = process(content)
-        IO.puts(final)
+        IO.puts("\n")
+        IO.inspect(final)
       {:error, reason} ->
         IO.puts(reason)
     end

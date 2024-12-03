@@ -85,7 +85,9 @@ defmodule Main do
   def run() do
     case File.read("2.input") do
       {:ok, content} ->
+        Benchee.run(%{"2-2" => fn -> process(content) end})
         final = process(content)
+        IO.puts("\n")
         IO.inspect(final)
       {:error, reason} ->
         IO.puts(reason)
