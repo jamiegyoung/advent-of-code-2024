@@ -17,8 +17,8 @@ defmodule Main do
 
   def process(content) do
     content
-      |> find_muls()
-      |> process_muls()
+    |> find_muls()
+    |> process_muls()
   end
 
   def run() do

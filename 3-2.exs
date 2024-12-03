@@ -20,26 +20,26 @@ defmodule Main do
     |> Enum.reduce(
       %{flag: true, value: 0},
       fn
-        [a, b], %{value: value, flag: flag} ->
-          if flag == true do
-            %{
-              flag: flag,
-              value: value + String.to_integer(a) * String.to_integer(b)
-            }
-          else
-            %{flag: flag, value: value}
-          end
-        ["do()"], acc -> %{flag: true, value: acc[:value]}
-        ["don't()"], acc -> %{flag: false, value: acc[:value]}
-      end
+      [a, b], %{value: value, flag: flag} ->
+        if flag == true do
+          %{
+            flag: flag,
+            value: value + String.to_integer(a) * String.to_integer(b)
+          }
+        else
+          %{flag: flag, value: value}
+        end
+      ["do()"], acc -> %{flag: true, value: acc[:value]}
+      ["don't()"], acc -> %{flag: false, value: acc[:value]}
+    end
     )
     |> Map.get(:value)
   end
 
   def process(content) do
     content
-      |> find_muls()
-      |> process_muls()
+    |> find_muls()
+    |> process_muls()
   end
 
   def run() do

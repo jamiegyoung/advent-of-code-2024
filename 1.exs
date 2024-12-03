@@ -13,15 +13,15 @@ defmodule Main do
 
   def process(content) do
     content
-      |> String.trim()
-      |> String.split("\n")
-      |> Enum.map(&String.split(&1, "   "))
-      |> transpose()
-      |> Enum.map(&Enum.sort(&1))
-      |> Enum.zip()
-      |> Enum.map(&to_int/1)
-      |> Enum.map(&diff/1)
-      |> Enum.sum()
+    |> String.trim()
+    |> String.split("\n")
+    |> Enum.map(&String.split(&1, "   "))
+    |> transpose()
+    |> Enum.map(&Enum.sort(&1))
+    |> Enum.zip()
+    |> Enum.map(&to_int/1)
+    |> Enum.map(&diff/1)
+    |> Enum.sum()
   end
 
   def run() do

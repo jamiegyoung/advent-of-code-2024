@@ -35,24 +35,24 @@ defmodule Main do
     end
 
     cell_statuses
-      |> Enum.with_index()
-      |> Enum.reduce([], fn {v, i}, acc ->
-        case v do
-          false -> [i | acc]
-          true -> acc
-        end
-      end)
-      # We know the diff is bad, we don't know which index is causing it,
-      # so we need to check the index before and after the bad index
-      |> Enum.reduce([], fn bad_index, acc ->
-        [
-          List.delete_at(row, bad_index),
-          List.delete_at(row, bad_index + 1),
-          List.delete_at(row, bad_index - 1) | acc
-        ]
-      end)
-      |> Enum.map(&get_differences/1)
-      |> Enum.filter(&internal_diffs_in_bounds(&1))
+    |> Enum.with_index()
+    |> Enum.reduce([], fn {v, i}, acc ->
+      case v do
+        false -> [i | acc]
+        true -> acc
+      end
+    end)
+    # We know the diff is bad, we don't know which index is causing it,
+    # so we need to check the index before and after the bad index
+    |> Enum.reduce([], fn bad_index, acc ->
+      [
+        List.delete_at(row, bad_index),
+        List.delete_at(row, bad_index + 1),
+        List.delete_at(row, bad_index - 1) | acc
+      ]
+    end)
+    |> Enum.map(&get_differences/1)
+    |> Enum.filter(&internal_diffs_in_bounds(&1))
   end
 
   def diffs_in_bounds(%{row: row, diffs: diffs}) do
@@ -65,21 +65,21 @@ defmodule Main do
 
     case recheck? do
       true ->
-          new_rows = generate_new_rows_from_bad_diffs(diffs, row)
-          length(new_rows) > 0
+        new_rows = generate_new_rows_from_bad_diffs(diffs, row)
+        length(new_rows) > 0
       false -> true
     end
   end
 
   def process(content) do
     content
-      |> String.trim()
-      |> String.split("\n")
-      |> Enum.map(&String.split(&1, " "))
-      |> Enum.map(&to_int/1)
-      |> Enum.map(&get_differences/1)
-      |> Enum.filter(&diffs_in_bounds(&1))
-      |> length()
+    |> String.trim()
+    |> String.split("\n")
+    |> Enum.map(&String.split(&1, " "))
+    |> Enum.map(&to_int/1)
+    |> Enum.map(&get_differences/1)
+    |> Enum.filter(&diffs_in_bounds(&1))
+    |> length()
   end
 
   def run() do

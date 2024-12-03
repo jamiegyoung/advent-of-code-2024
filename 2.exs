@@ -9,12 +9,12 @@ defmodule Main do
   def get_differences(row) do
     row
     |> Enum.with_index()
-      |> Enum.map(fn {v, i} ->
-          case Enum.at(row, i + 1) do
-            nil -> 0
-            x -> x - v
-          end
-      end)
+    |> Enum.map(fn {v, i} ->
+      case Enum.at(row, i + 1) do
+        nil -> 0
+        x -> x - v
+      end
+    end)
     |> Enum.drop(-1)
   end
 
@@ -27,13 +27,13 @@ defmodule Main do
 
   def process(content) do
     content
-      |> String.trim()
-      |> String.split("\n")
-      |> Enum.map(&String.split(&1, " "))
-      |> Enum.map(&to_int/1)
-      |> Enum.map(&get_differences/1)
-      |> Enum.filter(&diffs_in_bounds/1)
-      |> length()
+    |> String.trim()
+    |> String.split("\n")
+    |> Enum.map(&String.split(&1, " "))
+    |> Enum.map(&to_int/1)
+    |> Enum.map(&get_differences/1)
+    |> Enum.filter(&diffs_in_bounds/1)
+    |> length()
   end
 
   def run() do
