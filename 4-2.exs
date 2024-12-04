@@ -78,7 +78,7 @@ defmodule Main do
       |> Enum.map(fn x -> char_indexes(x, "A") end)
 
     split_content
-      |> filter_to_matches(indexes, ~c"M1S")
+    |> filter_to_matches(indexes, ~c"M1S")
   end
 
   def run() do

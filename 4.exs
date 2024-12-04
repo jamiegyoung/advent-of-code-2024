@@ -8,23 +8,23 @@ defmodule Main do
 
   def extract_diagonal(matrix, row, col, direction) do
     matrix
+    |> Enum.with_index()
+    |> Enum.reduce([], fn {r, ri}, racc ->
+      r
       |> Enum.with_index()
-      |> Enum.reduce([], fn {r, ri}, racc ->
-        r
-        |> Enum.with_index()
-        |> Enum.reduce(racc, fn {c, ci}, cacc ->
-          if (ri - row) * direction == ci - col do
-            if ri - row == 0 do
-              # Mark the origin of the match with 1
-              [1 | cacc]
-            else
-              [c | cacc]
-            end
+      |> Enum.reduce(racc, fn {c, ci}, cacc ->
+        if (ri - row) * direction == ci - col do
+          if ri - row == 0 do
+            # Mark the origin of the match with 1
+            [1 | cacc]
           else
-            cacc
+            [c | cacc]
           end
-        end)
+        else
+          cacc
+        end
       end)
+    end)
   end
 
   def transpose(matrix) do
@@ -77,7 +77,7 @@ defmodule Main do
       |> Enum.map(fn x -> char_indexes(x, "X") end)
 
     split_content
-      |> filter_to_matches(indexes, ~c"1MAS")
+    |> filter_to_matches(indexes, ~c"1MAS")
   end
 
   def run() do
