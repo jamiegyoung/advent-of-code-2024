@@ -6,6 +6,15 @@ defmodule Main do
     |> Enum.map(fn {_, i} -> i end)
   end
 
+
+  def extract_diagonal(matrix, row, col, direction) do
+    matrix
+    |> Enum.with_index()
+    |> Enum.reduce([], fn {r, ri}, racc ->
+      racc ++ extract_row_diagonal(r, ri, row, col, direction)
+    end)
+  end
+
   defp extract_row_diagonal(row, ri, row_origin, col_origin, direction) do
     row
     |> Enum.with_index()
@@ -14,14 +23,6 @@ defmodule Main do
         None -> cacc
         x -> [x | cacc]
       end
-    end)
-  end
-
-  def extract_diagonal(matrix, row, col, direction) do
-    matrix
-    |> Enum.with_index()
-    |> Enum.reduce([], fn {r, ri}, racc ->
-      racc ++ extract_row_diagonal(r, ri, row, col, direction)
     end)
   end
 

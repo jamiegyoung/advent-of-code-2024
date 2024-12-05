@@ -18,18 +18,25 @@ defmodule Main do
   defp extract_row_diagonal(row, ri, row_origin, col_origin, direction) do
     row
     |> Enum.with_index()
-    |> Enum.reduce([], fn {c, ci}, cacc ->
-      if (ri - row_origin) * direction == ci - col_origin do
-        # Mark the origin of the match with 1
-        if ri - row_origin == 0 do
-          [1 | cacc]
-        else
-          [c | cacc]
-        end
-      else
-        cacc
+    |> Enum.reduce([], fn c_indexed, cacc ->
+      case diagonal_value(ri, row_origin, direction, c_indexed, col_origin) do
+        None -> cacc
+        x -> [x | cacc]
       end
     end)
+  end
+
+  defp diagonal_value(ri, row_origin, direction, {c, ci}, col_origin) do
+    if (ri - row_origin) * direction == ci - col_origin do
+      # Mark the origin of the match with 1
+      if ri - row_origin == 0 do
+        1
+      else
+        c
+      end
+    else
+      None
+    end
   end
 
   def transpose(matrix) do
@@ -45,22 +52,22 @@ defmodule Main do
     Enum.any?([forwards_contains, backwards_contains], fn x -> x end)
   end
 
+  defp filter_row_to_matches(index, content, row_index, index, chars) do
+    pos_diag = extract_diagonal(content, row_index, index, -1)
+    neg_diag = extract_diagonal(content, row_index, index, 1)
+    # Check if both a positive and negative diagonal contain the charset
+    # either forwards or backwards
+    is_mas = charset_bidirectional_contains(pos_diag, chars) && charset_bidirectional_contains(neg_diag, chars)
+
+    is_mas && 1 || 0
+  end
+
   def filter_to_matches(content, indexes, chars) do
     indexes_with_index = Enum.with_index(indexes)
 
     Enum.reduce(indexes_with_index, 0, fn {row_indexes, row_index}, acc ->
       Enum.reduce(row_indexes, acc, fn index, iacc ->
-        pos_diag = extract_diagonal(content, row_index, index, -1)
-        neg_diag = extract_diagonal(content, row_index, index, 1)
-        # Check if both a positive and negative diagonal contain the charset
-        # either forwards or backwards
-        is_mas = charset_bidirectional_contains(pos_diag, chars) && charset_bidirectional_contains(neg_diag, chars)
-
-        if is_mas do
-          iacc + 1
-        else
-          iacc
-        end
+        iacc + filter_row_to_matches(index, content, row_index, index, chars)
       end)
     end)
   end
@@ -84,7 +91,7 @@ defmodule Main do
   def run() do
     case File.read("4.input") do
       {:ok, content} ->
-        Benchee.run(%{"4-2" => fn -> process(content) end})
+        # Benchee.run(%{"4-2" => fn -> process(content) end})
         final = process(content)
         IO.inspect(final)
       {:error, reason} ->
