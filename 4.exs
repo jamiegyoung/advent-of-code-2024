@@ -6,7 +6,6 @@ defmodule Main do
     |> Enum.map(fn {_, i} -> i end)
   end
 
-
   def extract_diagonal(matrix, row, col, direction) do
     matrix
     |> Enum.with_index()
@@ -49,7 +48,9 @@ defmodule Main do
     forwards_contains = String.contains?(char_list_string, charset_string)
     backwards_contains = String.contains?(char_list_string, String.reverse(charset_string))
 
-    Enum.reduce([forwards_contains, backwards_contains], 0, fn x, acc -> if x do acc + 1 else acc end end)
+    Enum.reduce([forwards_contains, backwards_contains], 0, fn x, acc ->
+      if x do acc + 1 else acc end
+    end)
   end
 
   defp filter_row_to_matches(content, index, row_index, chars) do
